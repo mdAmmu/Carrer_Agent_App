@@ -20,8 +20,8 @@
     "axios": "^1.7.9",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
-    "dotenv": "^16.4.7",
-    "drizzle-orm": "^0.39.1",
+    "dotenv": "^16.6.1",
+    "drizzle-orm": "^0.39.3",
     "inngest": "^3.40.2",
     "lucide-react": "^0.474.0",
     "next": "15.2.3",
@@ -30,7 +30,8 @@
     "react-icons": "^5.5.0",
     "react-markdown": "^8.0.6",
     "tailwind-merge": "^3.0.1",
-    "tailwindcss-animate": "^1.0.7"
+    "tailwindcss-animate": "^1.0.7",
+    "uuid": "^13.0.0"
   },
   "devDependencies": {
     "@types/node": "^20",
