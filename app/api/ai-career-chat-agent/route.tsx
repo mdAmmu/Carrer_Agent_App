@@ -31,7 +31,7 @@ export async function POST(req:any) {
     return NextResponse.json(runStatus.data?.[0].output?.output[0]);
 }
 
-async function getRuns(runId:string){
+export async function getRuns(runId:string){
     const result = await axios.get(`${process.env.INNGEST_SERVER_HOST}/v1/events/${runId}/runs`, {
         headers:{
             Authorization:`Bearer ${process.env.INNGEST_SIGNING_KEY}`
