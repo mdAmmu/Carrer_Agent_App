@@ -1,6 +1,7 @@
 
 import { inngest } from "./client";
 import {createAgent, gemini} from '@inngest/agent-kit'
+import ImageKit from "imagekit";
 
 // export const helloWorld = inngest.createFunction(
 //   { id: "hello-world" },
@@ -37,3 +38,32 @@ export const AiCareerAgent = inngest.createFunction(
     return result
   },
 );
+
+var imagekit = new ImageKit({
+  // @ts-ignore
+  publicKey : process.env.IMAGEKIT_PUBLIC_KEY,
+  // @ts-ignore
+  privateKey : process.env.IMAGEKIT_PRIVATE_KEY,
+  // @ts-ignore
+  urlEndpoint : process.env.IMAGEKIT_ENDPOINT_URL
+}) 
+
+export const AiResumeAgent = inngest.createFunction(
+  {id : "AiResumeAgent"},
+  { event: 'AiResumeAgent'},
+  async ({event , step }) => {
+    const {recordId, base64ResumeFile, pdfText} = await event.data
+
+    const uploadImageUrl = await step.run("uploadImage", async (){
+      const imageKitFile = await imagekit.upload({
+        file : base64ResumeFile,
+        fileName: `${Date.now()}.pdf`,
+        isPublished: true
+      })
+
+      return imageKitFile.url
+    })
+    
+  
+  }
+)
