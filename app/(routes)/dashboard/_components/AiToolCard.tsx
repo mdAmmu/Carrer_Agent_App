@@ -38,7 +38,8 @@ const AiToolCard = ({ tool }: AIToolProps) => {
 
     const result = await axios.post('/api/history', {
       recordId: id,
-      content: []
+      content: [],
+      aiAgentType:tool.path
     });
     router.push(tool.path + "/" + id);
 

@@ -1,4 +1,5 @@
 
+import { HistoryTable } from "@/configs/schema";
 import { inngest } from "./client";
 import { createAgent, gemini } from '@inngest/agent-kit'
 import ImageKit from "imagekit";
@@ -122,7 +123,7 @@ export const AiResumeAgent = inngest.createFunction(
   { id: "AiResumeAgent" },
   { event: 'AiResumeAgent' },
   async ({ event, step }) => {
-    const { recordId, base64ResumeFile, pdfText } = await event.data
+    const { recordId, base64ResumeFile, pdfText,aiAgentType,userEmail} = await event.data
 
     const uploadImageUrl = await step.run("uploadImage", async () => {
       const imageKitFile = await imagekit.upload({
@@ -140,6 +141,19 @@ export const AiResumeAgent = inngest.createFunction(
     const rawContentJson = rawContent.replace('```json','').replace('```','');
     const parseJson = JSON.parse(rawContentJson);
     return parseJson;
+
+    // Save to DB
+    const saveToDb = await step.run('SaveToDb', async()=> {
+      const result = await db.insert(HistoryTable).values({
+        recordId:recordId,
+        content:parseJson,
+        aiAgentType:aiAgentType,
+        createdAt:(new Date()).toString(),
+        userEmail: userEmail,
+      });
+      console.log(result);
+      return parseJson
+    })
 
 
   }
