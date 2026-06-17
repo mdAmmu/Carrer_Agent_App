@@ -1,36 +1,177 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+<p align="center">
+  <img src="./public/logo.svg" alt="Career Agent Logo" width="120"/>
+</p>
 
-## Getting Started
+<h1 align="center">🤖 Career Agent App</h1>
 
-First, run the development server:
+<p align="center">
+  An AI-powered career coaching platform with interactive chat and intelligent resume analysis — powered by Google Gemini and Inngest Agent Kit.
+</p>
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+<p align="center">
+  <img src="https://img.shields.io/badge/Next.js-15-000000?style=for-the-badge&logo=next.js&logoColor=white" alt="Next.js"/>
+  <img src="https://img.shields.io/badge/TypeScript-5-3178C6?style=for-the-badge&logo=typescript&logoColor=white" alt="TypeScript"/>
+  <img src="https://img.shields.io/badge/Tailwind_CSS-3-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white" alt="Tailwind"/>
+  <img src="https://img.shields.io/badge/Gemini_AI-2.0-4285F4?style=for-the-badge&logo=google&logoColor=white" alt="Gemini"/>
+  <img src="https://img.shields.io/badge/Clerk-Auth-6C47FF?style=for-the-badge&logo=clerk&logoColor=white" alt="Clerk"/>
+</p>
+
+---
+
+## 📑 Table of Contents
+
+- [Features](#-features)
+- [Tech Stack](#-tech-stack)
+- [Folder Structure](#-folder-structure)
+- [Environment Variables](#-environment-variables)
+- [Getting Started](#-getting-started)
+- [Available Scripts](#-available-scripts)
+- [Database Schema](#-database-schema)
+- [License](#-license)
+
+---
+
+## ✨ Features
+
+- 💬 **AI Career Chat Agent** — Interactive chatbot powered by Gemini 2.0 Flash for job search, interview prep, skill development, and career transitions
+- 📄 **AI Resume Analyzer** — Upload a PDF resume and receive a detailed report with overall score, section breakdowns, strengths, weaknesses, and improvement tips
+- 🔐 **Secure Authentication** — Sign-in/sign-up via Clerk with route-level protection
+- 📊 **Dashboard** — Central hub to access AI tools and view analysis history
+- 📜 **History Tracking** — All AI interactions and resume reports saved for future reference
+- 📁 **PDF Upload & Storage** — Resumes parsed client-side, stored via ImageKit
+- ⚡ **Background Processing** — AI tasks run asynchronously via Inngest
+
+---
+
+## 🛠️ Tech Stack
+
+| Category | Technology |
+|----------|-----------|
+| **Framework** | Next.js 15 (App Router) |
+| **Language** | TypeScript |
+| **Styling** | Tailwind CSS, shadcn/ui, Radix UI |
+| **Authentication** | Clerk |
+| **Database** | Neon (Serverless PostgreSQL) |
+| **ORM** | Drizzle ORM |
+| **AI Engine** | Google Gemini 2.0 Flash via Inngest Agent Kit |
+| **Background Jobs** | Inngest |
+| **File Storage** | ImageKit |
+| **PDF Parsing** | pdf-parse |
+| **Icons** | Lucide React, React Icons |
+
+---
+
+## 📁 Folder Structure
+
+```
+carrer_agent_app/
+├── app/
+│   ├── (auth)/                    # 🔐 Clerk sign-in / sign-up pages
+│   ├── (routes)/
+│   │   ├── dashboard/             # 📊 Dashboard & AI tool cards
+│   │   │   └── _components/       # AiToolCard, ResumeUploadDialog, History
+│   │   ├── ai-tools/ai-chat/      # 💬 Career chat interface
+│   │   └── profile/               # 👤 User profile
+│   ├── _components/               # AppHeader, AppSidebar
+│   └── api/
+│       ├── user/                  # User creation/lookup
+│       ├── ai-career-chat-agent/  # Career chat endpoint
+│       ├── ai-resume-agent/       # Resume analyzer endpoint
+│       ├── history/               # History retrieval
+│       └── inngest/               # Inngest webhook handler
+├── components/ui/                 # shadcn/ui components
+├── configs/
+│   ├── db.tsx                     # Drizzle database client
+│   └── schema.ts                  # Database schema
+├── inngest/
+│   ├── client.ts                  # Inngest client setup
+│   └── functions.ts               # AI agent definitions
+├── hooks/                         # Custom React hooks
+├── lib/                           # Utility functions
+└── public/                        # Static assets & logos
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🔑 Environment Variables
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Create a `.env` file in the root. See [`.env.example`](.env.example) for all values.
 
-## Learn More
+| Variable | Description | Required |
+|----------|-------------|:--------:|
+| `NEXT_PUBLIC_NEON_DB_CONNECTION_STRING` | Neon PostgreSQL connection string | ✅ |
+| `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` | Clerk public key | ✅ |
+| `CLERK_SECRET_KEY` | Clerk secret key | ✅ |
+| `GEMINI_API_KEY` | Google Gemini API key | ✅ |
+| `INNGEST_SIGNING_KEY` | Inngest signing key | ✅ |
+| `INNGEST_EVENT_KEY` | Inngest event key | ✅ |
+| `INNGEST_SERVER_HOST` | Inngest server URL | ✅ |
+| `IMAGEKIT_PUBLIC_KEY` | ImageKit public key | ✅ |
+| `IMAGEKIT_PRIVATE_KEY` | ImageKit private key | ✅ |
+| `IMAGEKIT_ENDPOINT_URL` | ImageKit URL endpoint | ✅ |
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🚀 Getting Started
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Prerequisites
 
-## Deploy on Vercel
+- **Node.js** 18+
+- **npm**, **yarn**, or **pnpm**
+- [Neon](https://neon.tech) PostgreSQL database
+- [Clerk](https://clerk.com) account
+- [Google AI Studio](https://aistudio.google.com) API key (Gemini)
+- [Inngest](https://inngest.com) account
+- [ImageKit](https://imagekit.io) account
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Installation & Setup
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+# 1️⃣ Clone the repository
+git clone <repository-url>
+cd carrer_agent_app
+
+# 2️⃣ Install dependencies
+npm install
+
+# 3️⃣ Set up environment variables
+cp .env.example .env
+# ✏️ Fill in your actual credentials in .env
+
+# 4️⃣ Push database schema to Neon
+npx drizzle-kit push
+
+# 5️⃣ Start the Inngest dev server (separate terminal)
+npx inngest-cli@latest dev
+
+# 6️⃣ Start the development server
+npm run dev
+```
+
+🌐 The app will be available at **http://localhost:3000**
+
+---
+
+## 📜 Available Scripts
+
+| Command | Description |
+|---------|-------------|
+| `npm run dev` | Start Next.js development server |
+| `npm run build` | Create production build |
+| `npm run start` | Start production server |
+| `npm run lint` | Run ESLint |
+
+---
+
+## 🗄️ Database Schema
+
+| Table | Description |
+|-------|-------------|
+| **users** | Registered user info — `id`, `name`, `email` |
+| **history** | AI interaction records — resume reports & chat logs linked by `userEmail` |
+
+---
+
+## 📄 License
+
+MIT

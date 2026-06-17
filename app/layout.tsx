@@ -43,3 +43,17 @@ export default function RootLayout({
     </ClerkProvider>
   );
 }
+
+
+<header className="flex  flex-wrap sm:justify-start  sm:flex-nowrap z-50 w-full bg-white border-b border-gray-200 text-sm py-3 sm:py-0 dark:bg-neutral-800 dark:border-neutral-700">
+        <nav className="relative  p-4 max-w-[85rem] w-full mx-auto px-4 sm:flex sm:items-center sm:justify-between sm:px-6 lg:px-8" aria-label="Global">
+          <div className="flex items-center justify-between">
+            <div>
+              <Image src={'/logo.svg'} alt="logo" width={150} height={150} />
+            </div>
+          </div>
+          <div id="navbar-collapse-with-animation" className="hs-collapse hidden overflow-hidden transition-all duration-300 basis-full grow sm:block">
+          
+          </div>
+        </nav>
+      </header>

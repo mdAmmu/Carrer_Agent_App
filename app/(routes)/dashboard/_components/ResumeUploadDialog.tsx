@@ -8,16 +8,18 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog"
-import { File, Sparkles } from 'lucide-react'
+import { File, Loader2Icon, Sparkles } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import {v4 as uuidv4} from 'uuid'
+import axios from 'axios'
 
 const ResumeUploadDialog = ({ openResumeUpload, setOpenResumeDialog }: any) => {
 
     const [file,setFile] = useState<any>();
+    const [loading,setLoading] = useState(false)
     const onFileChange=(event:any)=>{
 
-        const file = event.target.file?.[0];
+        const file = event.target.files?.[0];
         if(file)
         {
             console.log(file.name);
@@ -25,11 +27,16 @@ const ResumeUploadDialog = ({ openResumeUpload, setOpenResumeDialog }: any) => {
         }
     }
 
-    const onUploadAndAnalyzer = () => {
+    const onUploadAndAnalyzer = async () => {
+        setLoading(true);
         const recordId = uuidv4();
         const formData = new FormData();
         formData.append('recordId',recordId);
         formData.append('resumeFile',file);
+        // send FOrmData to Backend server
+        const result = await axios.post('/api/ai-resume-agent', formData);
+        console.log(result.data)
+        setLoading(false)
     }
 
     return (
@@ -38,7 +45,7 @@ const ResumeUploadDialog = ({ openResumeUpload, setOpenResumeDialog }: any) => {
             <DialogContent>
                 <DialogHeader>
                     <DialogTitle>Are you absolutely sure?</DialogTitle>
-                    <DialogDescription>
+                    <DialogDescription asChild>
                         <div>
                             <label htmlFor="resumeUpload" className='flex items-center flex-col justify-center
                              p-7 border border-dashed rounded-xl hover:bg-slate-100 cursor-pointer'>
@@ -53,7 +60,8 @@ const ResumeUploadDialog = ({ openResumeUpload, setOpenResumeDialog }: any) => {
                 </DialogHeader>
                 <DialogFooter>
                     <Button variant={'outline'}>Cancel</Button>
-                    <Button disabled={!file} onClick={onUploadAndAnalyzer}><Sparkles/>Upload & Analyzer</Button>
+                    <Button disabled={!file || loading} onClick={onUploadAndAnalyzer}>
+                        {loading ? <Loader2Icon className='animate-spin'/> : <Sparkles/> } Upload & Analyzer</Button>
                 </DialogFooter>
             </DialogContent>
         </Dialog>
